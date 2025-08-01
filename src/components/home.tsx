@@ -23,41 +23,9 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[280px] p-0">
-              <SidebarContent />
-            </SheetContent>
-          </Sheet>
-          <h1 className="text-xl font-semibold">DFW 20 Cleaners</h1>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin"
-              alt="Admin"
-            />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
-
+     
       <div className="flex">
-        {/* Sidebar for desktop */}
-        <aside className="hidden md:block w-[280px] h-[calc(100vh-60px)] border-r border-gray-200 bg-white">
-          <SidebarContent />
-        </aside>
+        {/* <Sidebar /> */}
 
         {/* Main Content */}
         <main className="flex-1 px-4 py-6 md:px-6 max-w-[800px] mx-auto w-full">

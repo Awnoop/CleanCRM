@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -13,7 +14,6 @@ import {
   SettingsIcon,
   LogOutIcon,
   MenuIcon,
-  BellIcon,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -24,63 +24,60 @@ interface SidebarProps {
 
 const Sidebar = ({ className, isOpen = false, onToggle }: SidebarProps) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
     { icon: <HomeIcon size={20} />, label: "Dashboard", href: "/" },
-    {
-      icon: <CalendarIcon size={20} />,
-      label: "Scheduler",
-      href: "/scheduler",
-    },
+    { icon: <CalendarIcon size={20} />, label: "Scheduler", href: "/scheduler" },
     { icon: <UsersIcon size={20} />, label: "Cleaners", href: "/cleaners" },
-    {
-      icon: <ClipboardListIcon size={20} />,
-      label: "Clients",
-      href: "/clients",
-    },
+    { icon: <ClipboardListIcon size={20} />, label: "Clients", href: "/clients" },
     { icon: <SettingsIcon size={20} />, label: "Settings", href: "/settings" },
   ];
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col bg-background">
+      {/* Logo + Toggle */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           <div className="rounded-md bg-primary p-1">
-            <span className="text-lg font-bold text-primary-foreground">
-              DFW
-            </span>
+            <span className="text-lg font-bold text-primary-foreground">DFW</span>
           </div>
           <h2 className="text-lg font-semibold">20 Cleaners</h2>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onToggle}
-          className="lg:hidden"
-        >
+        <Button variant="ghost" size="icon" onClick={onToggle} className="lg:hidden">
           <MenuIcon size={20} />
         </Button>
       </div>
 
       <Separator />
 
+      {/* Nav */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="flex flex-col gap-1">
-          {navItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.href}
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </a>
-          ))}
+          {navItems.map((item, index) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={index}
+                to={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-accent text-accent-foreground"
+                    : "hover:bg-muted hover:text-foreground"
+                )}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
       </ScrollArea>
 
       <Separator />
 
+      {/* User Info + Logout */}
       <div className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -93,9 +90,7 @@ const Sidebar = ({ className, isOpen = false, onToggle }: SidebarProps) => {
             </Avatar>
             <div>
               <p className="text-sm font-medium">Admin User</p>
-              <p className="text-xs text-muted-foreground">
-                admin@dfw20cleaners.com
-              </p>
+              <p className="text-xs text-muted-foreground">admin@dfw20cleaners.com</p>
             </div>
           </div>
           <Button variant="ghost" size="icon">
@@ -106,7 +101,6 @@ const Sidebar = ({ className, isOpen = false, onToggle }: SidebarProps) => {
     </div>
   );
 
-  // Mobile sidebar using Sheet component
   const MobileSidebar = () => (
     <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
       <SheetTrigger asChild>
@@ -120,14 +114,8 @@ const Sidebar = ({ className, isOpen = false, onToggle }: SidebarProps) => {
     </Sheet>
   );
 
-  // Desktop sidebar
   const DesktopSidebar = () => (
-    <div
-      className={cn(
-        "hidden h-full w-[280px] flex-col border-r lg:flex",
-        className,
-      )}
-    >
+    <div className={cn("hidden h-full w-[280px] flex-col border-r lg:flex", className)}>
       <SidebarContent />
     </div>
   );
